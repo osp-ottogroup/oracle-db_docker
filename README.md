@@ -32,12 +32,12 @@ Creates an image with current patch state of underlying OS and Oracle software.
 Patching requires a complete ORACLE_HOME, so be aware of setting `-o '--build-arg SLIMMING=false'` in the previous step.
 As part of the image build unnecessary packages are removed after patching to reduce the size of the resulting image.
 - Change dir to oracle_db_patch
-- Download patch file as well as current OPatch utility and store in current directory
+- Download patch file as well as the according OPatch utility and store in current directory
 - Run "./build_db_image.sh \<VERSION\> \<patch file.zip\> \<opatch file.zip\>"
 - Tag created image according to DB release and push it to your local registry
 
 #### Example steps for 12.1.0.2 EE
-- Download current opatch tool from https://updates.oracle.com/download/6880880.html
+- Download opatch tool according to your DB release from https://updates.oracle.com/download/6880880.html
 - store the zip file with opatch it in folder `oracle_db_patched`
 - Download the current patch set bundle, store it also in  folder `oracle_db_patched`
 - Build a new image with patched software and stripped from unused packages by:
