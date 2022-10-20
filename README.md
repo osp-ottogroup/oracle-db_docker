@@ -57,6 +57,7 @@ The default password for sytem accounts is "oracle".
 - Change dir to the folder `oracle_db_prebuilt`
 - Run `./build_db_image.sh <VERSION>` 
 - Tag the created image and push to your local registry
+- TODO: Add customization for sizing and passwords
 
 #### Example steps for 12.1.0.2 EE
 - Build the image 
@@ -72,6 +73,15 @@ To create an container based on the example image execute:
 
       docker run -p 1521:1521 oracle/database_prebuilt:12.1.0.2-ee 
 
+Due to the copy on write at file level of Docker's overlay file system it takes some seconds to clone the touched datafiles, then the DB is running.
+
+## Enrich the image with business related additions
+
+In addition to the raw DB instance you may build an enriched image based on step 3 with for example:
+* User accounts preinstalled
+* DB structures preinstalled in schemas
+* Master data preinstalled in tables of that schemas
+* TODO: Add a template scripting and Dockerfile for that purpose
 
 ## Alternative: Use existing Docker images from container-registry.oracle.com
 https://container-registry.oracle.com contains Docker images for the current release of several Oracle products including Oracle-DB. 
