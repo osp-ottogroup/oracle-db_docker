@@ -29,6 +29,9 @@ else
 fi
 export BASE_IMAGE=oracle/database:${VERSION}
 
+# Ensure that image is loaded before docker inspect
+docker pull $BASE_IMAGE
+
 # get environment from base image and replace in Dockerfile
 docker inspect ${BASE_IMAGE} | jq ".[0].Config.Env" |
   sed 's/"//g; s/,//; s/^/ENV /; s/\//\\\//g'  |

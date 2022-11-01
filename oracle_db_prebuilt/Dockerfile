@@ -34,6 +34,10 @@ RUN     rm -rf /var/log/*
 
 FROM scratch
 
+# Ensure the ORACLE_SID is set in the created image, required for "sqlplus / as sysdba"
+ARG ORACLE_SID
+ENV ORACLE_SID=$ORACLE_SID
+
 # next line will be replaced with ENV of BASE_IMAGE before docker build
 BASE_ENV
 

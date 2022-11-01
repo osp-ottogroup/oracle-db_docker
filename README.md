@@ -77,11 +77,18 @@ Due to the copy on write at file level of Docker's overlay file system it takes 
 
 ## Enrich the image with business related additions
 
-In addition to the raw DB instance you may build an enriched image based on step 3 with for example:
-* User accounts preinstalled
-* DB structures preinstalled in schemas
-* Master data preinstalled in tables of that schemas
-* TODO: Add a template scripting and Dockerfile for that purpose
+In addition to the raw DB instance you may build an additional image based on step 3 enriched with business structures.
+
+### Example for 12.1.0.2 EE
+Build a new image with:
+* modified instance settings for memory
+* an DB-user BUSINESS created
+* the schema SYS analyzed
+* a SQL file placed for execution at each DB startup
+
+
+    cd oracle_db_prebuilt_enriched
+    ./build_db_image.sh oracle/database_prebuilt:12.1.0.2-ee oracle/database_prebuilt_enriched:12.1.0.2-ee
 
 ## Alternative: Use existing Docker images from container-registry.oracle.com
 https://container-registry.oracle.com contains Docker images for the current release of several Oracle products including Oracle-DB. 
