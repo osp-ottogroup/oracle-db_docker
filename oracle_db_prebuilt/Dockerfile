@@ -1,23 +1,19 @@
 # Build Oracle database image with read to use database instance for immediate start
-# Based on image created with Dockerfile from https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance/dockerfiles/12.1.0.2
 # Peter Ramm, 10.01.2019
 
 # Usage:
 # increasing memory available for docker to 3GB via Docker > Preferences... > Advanced > Ram. It defaults to only 2 GB (on mac).
-# Build image:                    > docker build --no-cache --build-arg VERSION=$VERSION -t oracle/database_prebuilt:${VERSION} -m 3g .
-# Create container from image:    > docker run --name oracle_db_prebuilt_${VERSION} -p1521:1521 -d oracle/database_prebuilt:${VERSION}
 # use ./build_db_image.sh to start build
 
 # Default if no argument is given from docker build
-ARG VERSION=0.0.0-ee
+ARG BASE_IMAGE=image:0.0.0.0-ee
 
-FROM oracle/database:${VERSION}
+FROM ${BASE_IMAGE} as base
 MAINTAINER Peter Ramm <Peter.Ramm@ottogroup.com>
 
 ARG ORACLE_SID=ORCLCDB
 ARG ORACLE_PDB=ORCLPDB1
-# ARG is reset by FROM clause therrfore ARG must be doubled here
-ARG VERSION=0.0.0-ee
+# ARG is reset by FROM clause therefore ARGs must be doubled here
 
 ENV ORACLE_SID=$ORACLE_SID \
     ORACLE_PDB=$ORACLE_PDB \
@@ -32,6 +28,20 @@ COPY    install_db_in_build.sh run_db_in_container.sh $ORACLE_BASE/
 #RUN     free -h
 # Create database instance
 RUN     /bin/sh -c "$ORACLE_BASE/install_db_in_build.sh"
+
+USER    root
+RUN     rm -rf /var/log/*
+
+FROM scratch
+
+# next line will be replaced with ENV of BASE_IMAGE before docker build
+BASE_ENV
+
+COPY --from=base / /
+
+USER    oracle
+
+WORKDIR /home/oracle
 
 EXPOSE  1521 5500
 # use bracket syntax to ensure that run_db_in_container.sh runs with PID 1 and receives SIGTERM signal

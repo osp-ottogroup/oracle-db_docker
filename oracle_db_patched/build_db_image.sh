@@ -23,7 +23,7 @@ export PATCHFILE=$2
 export OPATCHFILE=$3
 export BASE_IMAGE=oracle/database:${VERSION}
 
-echo "Building patched Oracle database for version = $VERSION"
+echo "Building patched Oracle database from $BASE_IMAGE"
 
 # get environment from base image and replace in Dockerfile
 docker inspect ${BASE_IMAGE} | jq ".[0].Config.Env" |
@@ -37,7 +37,6 @@ sed "s/BASE_ENV/$(cat base.env)/" Dockerfile > Dockerfile.modified
 docker build \
     --no-cache \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
-    --build-arg VERSION=$VERSION \
     --build-arg PATCHFILE=$PATCHFILE \
     --build-arg OPATCHFILE=$OPATCHFILE \
     -f Dockerfile.modified \

@@ -1,3 +1,5 @@
 /oracle_db_patched/p*.zip
 /oracle_db_patched/base.env
 /oracle_db_patched/Dockerfile.modified
+/oracle_db_prebuilt/Dockerfile.modified
+/oracle_db_prebuilt/base.env

@@ -13,7 +13,7 @@
 # Use this script instead of building directly with dockerfiles
 if [ $# -ne 1 ]
 then
-  echo "Syntax: build_db_image <version> <patchfile>"
+  echo "Syntax: build_db_image <version>"
   echo "Parameter VERSION expected! Like '12.1.0.2-ee'"
   exit 1
 fi
@@ -27,6 +27,15 @@ else
   export ORACLE_SID=ORCLCDB
   export ORACLE_PDB=ORCLPDB1
 fi
+export BASE_IMAGE=oracle/database:${VERSION}
+
+# get environment from base image and replace in Dockerfile
+docker inspect ${BASE_IMAGE} | jq ".[0].Config.Env" |
+  sed 's/"//g; s/,//; s/^/ENV /; s/\//\\\//g'  |
+  grep -v "\[" | grep -v "\]" |
+  awk '{printf "%s\\n", $0}' > base.env
+
+sed "s/BASE_ENV/$(cat base.env)/" Dockerfile > Dockerfile.modified
 
 echo "Building Oracle database for version = $VERSION"
 
@@ -34,10 +43,11 @@ echo "Building Oracle database for version = $VERSION"
 # Disable DOCKER_BUILDKIT as workaround for "/sys/fs/cgroup/memory.max no such file or directory" see: https://github.com/oracle/docker-images/issues/2334
 DOCKER_BUILDKIT=0 docker build \
     --no-cache \
-    --build-arg VERSION=$VERSION \
+    --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg ORACLE_SID=$ORACLE_SID \
     --build-arg ORACLE_PDB=$ORACLE_PDB \
     --progress=plain \
+    -f Dockerfile.modified \
     -t oracle/database_prebuilt:$VERSION \
     -m 3g .
 

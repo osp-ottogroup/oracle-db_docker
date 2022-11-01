@@ -1,5 +1,5 @@
 # oracle-db_docker
-This repo contains the Dockerfiles ans scripts needed to build Docker images with an already installed Oracle Database instance.
+This repo contains the Dockerfiles and scripts needed to build Docker images with an already installed Oracle Database instance.
 
 Purpose for these images is use for development and test DBs, not production.
 A quick start in seconds of a container with a fresh usable running DB instance is especially helpful in CI piplines.
@@ -19,10 +19,10 @@ Follow the instruction from https://github.com/oracle/docker-images/tree/master/
 * Store the downloaded software package at docker-images/OracleDatabase/SingleInstance/dockerfiles/12.1.0.2 
 * create the Docker image by executing:
 
-      cd docker-images/OracleDatabase/SingleInstance/dockerfiles <br/>
+      cd docker-images/OracleDatabase/SingleInstance/dockerfiles
       ./buildContainerImage.sh -v 12.1.0.2 -e -t oracle/database:12.1.0.2-ee  -o '--build-arg SLIMMING=false'
 
-  * rename zip files according to the error message if they did not have the expect name (like `linuxamd64_12102_database_1of2.zip`) 
+  * rename zip files according to the error message if they did not have the expected name (like `linuxamd64_12102_database_1of2.zip`) 
   * the `-o '--build-arg SLIMMING=false'` is needed only if you plan to patch the image in the next step. 
 Otherwise the image will be slimmed down by removing unneded packages like sqldeveloper, but patching such a slimmed image becomes impossible.
 * The resulting Docker image is named `oracle/database:12.1.0.2-ee`
@@ -32,7 +32,7 @@ Creates an image with current patch state of underlying OS and Oracle software.
 Patching requires a complete ORACLE_HOME, so be aware of setting `-o '--build-arg SLIMMING=false'` in the previous step.
 As part of the image build unnecessary packages are removed after patching to reduce the size of the resulting image.
 - Change dir to oracle_db_patch
-- Download patch file as well as the according OPatch utility and store in current directory
+- Download patch file as well as the OPatch utility according to the DB release and store them in current directory
 - Run "./build_db_image.sh \<VERSION\> \<patch file.zip\> \<opatch file.zip\>"
 - Tag created image according to DB release and push it to your local registry
 
