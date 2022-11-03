@@ -87,9 +87,10 @@ Build a new image with:
 * the schema SYS analyzed
 * SQL files placed for execution at each DB startup at $ORACLE_BASE/scripts/startup
 
-
-    cd oracle_db_prebuilt_enriched
-    ./build_db_image.sh oracle/database_prebuilt:12.1.0.2-ee oracle/database_prebuilt_enriched:12.1.0.2-ee
+```
+cd oracle_db_prebuilt_enriched
+./build_db_image.sh oracle/database_prebuilt:12.1.0.2-ee oracle/database_prebuilt_enriched:12.1.0.2-ee
+```
 
 ## Alternative: Use existing Docker images from container-registry.oracle.com
 https://container-registry.oracle.com contains Docker images for the current release of several Oracle products including Oracle-DB. 
