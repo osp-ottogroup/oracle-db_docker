@@ -77,8 +77,10 @@ Due to the copy on write at file level of Docker's overlay file system it takes 
 
 In addition to the raw DB instance you may build an additional image based on step 3 enriched with business structures.
 
-Due to Docker's "copy on write" implementation at file level each data file is cloned at DB start during update of some header bytes.
-Using multistage builds for Docker images prevents from increasing the size of each image by the size of the datafiles.
+Due to Docker's "copy on write" implementation at file level for the "overlay2" storage driver each data file is cloned at DB start during update of some header bytes.
+Using multistage builds with single-layer Docker images prevents from increasing the size of each image by the size of the datafiles.<br/>
+As an alternative you may use the "devicemapper" storage driver in direct-lvm mode, which does copy on write at block level.
+However,  the "devicemapper" storage driver is marked deprecated in favor of "overlay2".
 
 ### Example for 12.1.0.2 EE
 Build a new image with:
