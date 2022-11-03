@@ -5,7 +5,7 @@
 $ORACLE_BASE/run_db_in_container.sh &
 
 sleep 1                                                                         # ensure that $ORACLE_BASE/$RUN_FILE has started
-# Wait until tail -f on alert.log occurs
+# Wait until tail -f on alert.log occurs, that means DB is running
 while [ true ]
 do
   ps -ef | grep -v grep | grep -e "tail -f.*diag/rdbms.*trace/alert.*.log" > /dev/null

@@ -4,12 +4,10 @@ This repo contains the Dockerfiles and scripts needed to build Docker images wit
 Purpose for these images is use for development and test DBs, not production.
 A quick start in seconds of a container with a fresh usable running DB instance is especially helpful in CI piplines.
 
-
-
 ## Steps to build an Oracle DB instance inside a Docker image
 ### Step 1: Build Docker image for Oracle DB software package
 
-Use Oracle's official Dockerfiles (by Gerald Venzl) at https://github.com/oracle/docker-images.
+Use Oracle's official Dockerfiles at https://github.com/oracle/docker-images.
 
 Follow the instruction from https://github.com/oracle/docker-images/tree/master/OracleDatabase
 
@@ -79,12 +77,15 @@ Due to the copy on write at file level of Docker's overlay file system it takes 
 
 In addition to the raw DB instance you may build an additional image based on step 3 enriched with business structures.
 
+Due to Docker's "copy on write" implementation at file level each data file is cloned at DB start during update of some header bytes.
+Using multistage builds for Docker images prevents from increasing the size of each image by the size of the datafiles.
+
 ### Example for 12.1.0.2 EE
 Build a new image with:
 * modified instance settings for memory
 * an DB-user BUSINESS created
 * the schema SYS analyzed
-* a SQL file placed for execution at each DB startup
+* SQL files placed for execution at each DB startup at $ORACLE_BASE/scripts/startup
 
 
     cd oracle_db_prebuilt_enriched
