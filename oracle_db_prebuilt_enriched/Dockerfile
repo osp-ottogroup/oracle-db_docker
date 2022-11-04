@@ -24,6 +24,10 @@ RUN     /bin/sh -c "$ORACLE_BASE/setup_db_in_build.sh"
 # Run this file at each following DB startup (docker run + docker start)
 COPY    run_at_each_startup.sql $ORACLE_BASE/scripts/startup/
 
+# Update OS to current patch state
+USER    root
+RUN     yum -y update
+
 FROM scratch
 
 BASE_ENV

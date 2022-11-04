@@ -62,6 +62,9 @@ RUN     cd $ORACLE_BASE/patch && \
 USER    root
 RUN     rm -rf /var/log/*
 
+# Update OS to current patch state
+RUN     yum -y update
+
 # Start fresh filesystem with current state
 FROM scratch
 

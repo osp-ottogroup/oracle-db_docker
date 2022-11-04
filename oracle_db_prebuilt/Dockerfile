@@ -32,6 +32,10 @@ RUN     /bin/sh -c "$ORACLE_BASE/install_db_in_build.sh"
 USER    root
 RUN     rm -rf /var/log/*
 
+# Update OS to current patch state
+RUN     yum -y update
+
+
 FROM scratch
 
 # Ensure the ORACLE_SID is set in the created image, required for "sqlplus / as sysdba"
