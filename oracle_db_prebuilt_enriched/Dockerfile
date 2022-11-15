@@ -44,7 +44,7 @@ CMD ["/bin/sh", "-c", "$ORACLE_BASE/run_db_in_container.sh"]
 
 # Ensure that both services are active in listener and original health check is successful
 HEALTHCHECK --interval=30s --start-period=10s --retries=5 \
-    CMD 'lsnrctl status | grep "Service \"${CDB_SERVICE}\" has" && lsnrctl status | grep "Service \"${PDB_SERVICE}\" has" && $ORACLE_BASE/$CHECK_DB_FILE'
+    CMD lsnrctl status | grep "Service \"${CDB_SERVICE}\" has" && lsnrctl status | grep "Service \"${PDB_SERVICE}\" has" && $ORACLE_BASE/$CHECK_DB_FILE
 
 
 
