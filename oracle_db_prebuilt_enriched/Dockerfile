@@ -11,11 +11,6 @@ ARG BASE_IMAGE=registry:0.0.0.0-ee
 FROM ${BASE_IMAGE} as base
 MAINTAINER Peter Ramm <Peter.Ramm@ottogroup.com>
 
-ARG CDB_SERVICE=ORCLCDB
-ARG PDB_SERVICE=orclpdb1
-ENV CDB_SERVICE ${CDB_SERVICE}
-ENV PDB_SERVICE ${PDB_SERVICE}
-
 COPY    setup_db_in_build.sh create_business_user.sql analyze_sys_schemas.sql modify_instance_settings.sql $ORACLE_BASE/
 
 # Run once at image creation
@@ -29,6 +24,11 @@ USER    root
 RUN     yum -y update
 
 FROM scratch
+
+ARG CDB_SERVICE=ORCLCDB
+ARG PDB_SERVICE=orclpdb1
+ENV CDB_SERVICE ${CDB_SERVICE}
+ENV PDB_SERVICE ${PDB_SERVICE}
 
 BASE_ENV
 
@@ -44,7 +44,7 @@ CMD ["/bin/sh", "-c", "$ORACLE_BASE/run_db_in_container.sh"]
 
 # Ensure that both services are active in listener and original health check is successful
 HEALTHCHECK --interval=30s --start-period=10s --retries=5 \
-    CMD lsnrctl status | grep "Service \"${CDB_SERVICE}\" has" && lsnrctl status | grep "Service \"${PDB_SERVICE}\" has" && $ORACLE_BASE/$CHECK_DB_FILE
+    CMD 'lsnrctl status | grep "Service \"${CDB_SERVICE}\" has" && lsnrctl status | grep "Service \"${PDB_SERVICE}\" has" && $ORACLE_BASE/$CHECK_DB_FILE'
 
 
 
