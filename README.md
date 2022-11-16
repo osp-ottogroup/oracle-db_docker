@@ -29,6 +29,7 @@ Otherwise the image will be slimmed down by removing unneded packages like sqlde
 Creates an image with current patch state of underlying OS and Oracle software.
 Patching requires a complete ORACLE_HOME, so be aware of setting `-o '--build-arg SLIMMING=false'` in the previous step.
 As part of the image build unnecessary packages are removed after patching to reduce the size of the resulting image.
+This way you cannot patch an already patched image. You need to always patch the original database image.
 - Change dir to oracle_db_patch
 - Download patch file as well as the OPatch utility according to the DB release and store them in current directory
 - Run "./build_db_image.sh \<VERSION\> \<patch file.zip\> \<opatch file.zip\>"
@@ -41,29 +42,22 @@ As part of the image build unnecessary packages are removed after patching to re
 - Build a new image with patched software and stripped from unused packages by:
 
       cd oracle_db_patched
-      ./build_db_image.sh 12.1.0.2-ee p34386266_121020_Linux-x86-64.zip p6880880_210000_Linux-x86-64.zip
+      ./build_db_image.sh 12.1.0.2-ee p34386266_121020_Linux-x86-64.zip p6880880_122010_Linux-x86-64.zip
 
 - the resulting Docker image is named `oracle/database_patched:12.1.0.2-ee`
-- remove the unpatched image and rename use the patched instead
-
-      docker rmi oracle/database:12.1.0.2-ee
-      docker tag oracle/database_patched:12.1.0.2-ee oracle/database:12.1.0.2-ee 
 
 ### Step 3: Create an image with a preinstalled database instance
 Creates an image with an already installed DB instance.
 The default password for sytem accounts is "oracle".
 - Change dir to the folder `oracle_db_prebuilt`
-- Run `./build_db_image.sh <VERSION>` 
+- Run `./build_db_image.sh <BASE_IMAGE> <TARGET_IMAGE>` 
 - Tag the created image and push to your local registry
-- TODO: Add customization for sizing and passwords
 
 #### Example steps for 12.1.0.2 EE
 - Build the image 
 
       cd oracle_db_prebuilt
-      ./build_db_image.sh 12.1.0.2-ee
-
-- the resulting Docker image is named `oracle/database_prebuilt:12.1.0.2-ee`
+      ./build_db_image.sh oracle/database_patched:12.1.0.2-ee oracle/database_prebuilt:12.1.0.2-ee
 
 ### Step 4: Create a container with a running DB instance
 
