@@ -91,5 +91,9 @@ cd oracle_db_prebuilt_enriched
 ## Alternative: Use existing Docker images from container-registry.oracle.com
 https://container-registry.oracle.com contains Docker images for the current release of several Oracle products including Oracle-DB. 
 
+### Free release 23.x (23ai) for development and test
+Gerald Venzl (Oracle employee) provides enhanced Docker images for relase 23.
+See: https://github.com/gvenzl/oci-oracle-free/blob/main/README.md
+
 ## Reminder
 Please note that a valid license is regularly required to run and operate an Oracle Database instance.
