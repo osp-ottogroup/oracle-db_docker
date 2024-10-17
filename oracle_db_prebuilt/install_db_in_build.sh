@@ -12,6 +12,12 @@ then
   opatch lsinventory
 fi
 
+# The container entrypoint used for ghcr.io/gvenzl/oracle-free etc.
+if [ -z "$RUN_FILE" ]; then
+  export RUN_FILE=container-entrypoint.sh
+  export ORACLE_PASSWORD=oracle
+fi
+
 # Start installer in background
 $ORACLE_BASE/$RUN_FILE &
 

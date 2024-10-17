@@ -50,7 +50,6 @@ DOCKER_BUILDKIT=0 docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg ORACLE_SID=$ORACLE_SID \
     --build-arg ORACLE_PDB=$ORACLE_PDB \
-    --progress=plain \
     -f Dockerfile.modified \
     -t $TARGET_IMAGE \
     -m 3g .

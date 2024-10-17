@@ -30,5 +30,10 @@ echo "Size of subdirs at volume $ORACLE_BASE/oradata"
 du -sh $ORACLE_BASE/oradata/*
 echo ""
 
+# The container entrypoint used for ghcr.io/gvenzl/oracle-free etc.
+if [ -z "$RUN_FILE" ]; then
+  export RUN_FILE=container-entrypoint.sh
+fi
+
 # Start database, ensure the script replaces the current one and receives SIGTERM
 exec $ORACLE_BASE/$RUN_FILE

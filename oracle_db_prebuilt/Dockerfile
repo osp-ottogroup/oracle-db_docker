@@ -20,6 +20,10 @@ ENV ORACLE_SID=$ORACLE_SID \
     ORACLE_PWD=oracle \
     ORACLE_CHARACTERSET=AL32UTF8
 
+USER    root
+RUN  microdnf install procps
+
+USER    oracle
 COPY    install_db_in_build.sh run_db_in_container.sh $ORACLE_BASE/
 
 # Check Environment
@@ -33,7 +37,7 @@ USER    root
 RUN     rm -rf /var/log/*
 
 # Update OS to current patch state
-RUN     yum -y update  && yum clean all
+RUN     microdnf update  && microdnf clean all
 
 FROM scratch
 

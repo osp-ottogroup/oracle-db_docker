@@ -95,5 +95,7 @@ https://container-registry.oracle.com contains Docker images for the current rel
 Gerald Venzl (Oracle employee) provides enhanced Docker images for relase 23.
 See: https://github.com/gvenzl/oci-oracle-free/blob/main/README.md
 
+You can proceed with step 3 using the provided images. 
+
 ## Reminder
 Please note that a valid license is regularly required to run and operate an Oracle Database instance.
